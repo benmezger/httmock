@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"io"
+	"io/ioutil"
 	"os"
 
 	"gopkg.in/yaml.v2"
@@ -21,13 +22,11 @@ func OpenFile(filepath string) io.Reader {
 		panic("File does not exist")
 	}
 
-	file, err := os.Open(filepath)
-	defer file.Close()
+	file, err := ioutil.ReadFile(filepath)
 	if err != nil {
 		panic(err)
 	}
-	return io.Reader(file)
-
+	return bytes.NewReader(file)
 }
 
 func ReadHTTPSpec(stream io.Reader) *HTTPSpec {
