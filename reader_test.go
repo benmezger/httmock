@@ -1,9 +1,31 @@
 package main
 
 import (
+	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
 )
+
+var example = `
+paths:
+  /:
+    get:
+      request:
+        args: foobar=12
+      response:
+        status: 200
+        payload: >-
+          {"msg": "Hello, world"}
+    post:
+      request:
+        args: foobar=12
+        body: >-
+          {"msg": "request payload"}
+      response:
+        status: 201
+        payload: >-
+          {"msg": "created"}
+`
 
 func Test_PrivateFileExists(t *testing.T) {
 	t.Run("Test if fileExists returns false", func(t *testing.T) {
@@ -14,13 +36,16 @@ func Test_PrivateFileExists(t *testing.T) {
 }
 
 func Test_ReadHTTPSpec(t *testing.T) {
-	t.Run("Test if ReadHTTPSpec reads the specification", func(t *testing.T) {
-		spec := ReadHTTPSpec(strings.NewReader("version: 1"))
-		if spec == nil {
-			t.Errorf("Spec is nil, got %v", spec)
-		}
-		if spec.Version != 1 {
-			t.Errorf("Spec.Version is not 1, got %v", spec)
-		}
-	})
+	get_request := &HTTPSpecMethodRequest{"foobar=12", ""}
+	get_response := &HTTPSpecMethodResponse{200, `{"msg": "Hello, world"}`}
+	post_request := &HTTPSpecMethodRequest{"foobar=12", `{"msg": "request payload"}`}
+	post_response := &HTTPSpecMethodResponse{201, `{"msg": "created"}`}
+
+	expected := &HTTPSpec{map[string]map[string]HTTPSpecMethod{
+		"/": {
+			"get":  HTTPSpecMethod{*get_request, *get_response},
+			"post": HTTPSpecMethod{*post_request, *post_response}}}}
+
+	spec := ReadHTTPSpec(strings.NewReader(example))
+	assert.Equal(t, spec, expected, "Spec should be equal to expected")
 }
