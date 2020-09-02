@@ -43,8 +43,8 @@ func Test_ReadHTTPSpec(t *testing.T) {
 
 	expected := &HTTPSpec{map[string]map[string]HTTPSpecMethod{
 		"/": {
-			"get":  HTTPSpecMethod{*get_request, *get_response},
-			"post": HTTPSpecMethod{*post_request, *post_response}}}}
+			"get":  HTTPSpecMethod{*get_request, *get_response, nil},
+			"post": HTTPSpecMethod{*post_request, *post_response, nil}}}}
 
 	spec := ReadHTTPSpec(strings.NewReader(example))
 	assert.Equal(t, spec, expected, "Spec should be equal to expected")
