@@ -6,6 +6,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/julienschmidt/httprouter"
 )
 
 type valid struct{}
@@ -41,7 +43,8 @@ func Test_getTypeMethod(t *testing.T) {
 }
 
 func Test_GenerateRoutes(t *testing.T) {
+	route := httprouter.New()
 	spec := ReadHTTPSpec(strings.NewReader(example))
-	assert.Equal(t, len(GenerateRoutes(spec)), 1, "There should be only one endpoint '/'")
-	assert.Equal(t, len(GenerateRoutes(spec)["/"]), 2, "There should be one two methods 'post' and 'get'")
+	assert.Equal(t, len(GenerateRoutes(spec, route)), 1, "There should be only one endpoint '/'")
+	assert.Equal(t, len(GenerateRoutes(spec, route)["/"]), 2, "There should be one two methods 'post' and 'get'")
 }

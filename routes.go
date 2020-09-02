@@ -7,7 +7,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func GenerateRoutes(spec *HTTPSpec) map[string][]interface{} {
+func GenerateRoutes(spec *HTTPSpec, handler *httprouter.Router) map[string][]interface{} {
 	func_handlers := make(map[string][]interface{})
 
 	for endpoint, attrs := range spec.Paths {
@@ -15,7 +15,7 @@ func GenerateRoutes(spec *HTTPSpec) map[string][]interface{} {
 			func_handlers[endpoint] = append(
 				func_handlers[endpoint],
 				getTypeMethod(
-					&httprouter.Router{},
+					handler,
 					strings.ToUpper(method)))
 		}
 	}
