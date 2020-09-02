@@ -20,4 +20,18 @@ func Test_HTTPSpecMethods(t *testing.T) {
 			assert.Nil(t, spec.GetPathHandlerByMethod("/", "GET"))
 		}
 	})
+
+	t.Run("Test if GetPathHandlerByMethod with invalid path", func(t *testing.T) {
+		spec := ReadHTTPSpec(strings.NewReader(example))
+		if assert.NotNil(t, spec) {
+			assert.Nil(t, spec.GetPathHandlerByMethod("invalid-path/", "GET"))
+		}
+	})
+
+	t.Run("Test if GetPathHandlerByMethod with invalid path method", func(t *testing.T) {
+		spec := ReadHTTPSpec(strings.NewReader(example))
+		if assert.NotNil(t, spec) {
+			assert.Nil(t, spec.GetPathHandlerByMethod("/", "OPTION"))
+		}
+	})
 }
