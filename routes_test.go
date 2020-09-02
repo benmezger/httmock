@@ -48,3 +48,8 @@ func Test_GenerateRoutes(t *testing.T) {
 	assert.Equal(t, len(GenerateRoutes(spec, route)), 1, "There should be only one endpoint '/'")
 	assert.Equal(t, len(GenerateRoutes(spec, route)["/"]), 2, "There should be one two methods 'post' and 'get'")
 }
+
+func Test_SetupRoutes(t *testing.T) {
+	router := SetupRoutes(ReadHTTPSpec(strings.NewReader(example)))
+	assert.NotNil(t, router)
+}

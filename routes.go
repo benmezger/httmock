@@ -31,3 +31,25 @@ func getTypeMethod(obj interface{}, name string) interface{} {
 		return method
 	}
 }
+
+func invoke(method reflect.Value, args ...interface{}) {
+	inputs := make([]reflect.Value, len(args))
+	for i, _ := range args {
+		inputs[i] = reflect.ValueOf(args[i])
+	}
+
+	method.Call(inputs)
+}
+
+func SetupRoutes(spec *HTTPSpec) *httprouter.Router {
+	router := httprouter.New()
+	r := GenerateRoutes(spec, router)
+	for endpoint, funcs := range r {
+		for _, m := range funcs {
+			method := m.(reflect.Method)
+			invoke(method.Func, router, endpoint, Index)
+		}
+	}
+
+	return router
+}
