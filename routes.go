@@ -12,6 +12,7 @@ func GenerateRoutes(spec *HTTPSpec, handler *httprouter.Router) map[string][]int
 
 	for endpoint, attrs := range spec.Paths {
 		for method := range attrs {
+			spec.Paths[endpoint][method].Handler = getTypeMethod(handler, strings.ToUpper(method))
 			func_handlers[endpoint] = append(
 				func_handlers[endpoint],
 				getTypeMethod(

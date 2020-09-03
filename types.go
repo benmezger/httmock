@@ -1,9 +1,5 @@
 package main
 
-import (
-	"net/http"
-)
-
 type HTTPSpecMethodResponse struct {
 	Status  int
 	Payload string
@@ -17,11 +13,11 @@ type HTTPSpecMethodRequest struct {
 type HTTPSpecMethod struct {
 	Request  HTTPSpecMethodRequest
 	Response HTTPSpecMethodResponse
-	Handler  *http.Handler `yaml:"-"`
+	Handler  interface{} `yaml:"-"`
 }
 
 type HTTPSpec struct {
-	Paths map[string]map[string]HTTPSpecMethod
+	Paths map[string]map[string]*HTTPSpecMethod
 }
 
 func (s *HTTPSpec) GetPaths() []string {
@@ -34,9 +30,8 @@ func (s *HTTPSpec) GetPaths() []string {
 
 func (s *HTTPSpec) GetPathHandlerByMethod(path, method string) interface{} {
 	val, err := s.Paths[path][method]
-	if err {
+	if !err {
 		return nil
 	}
 	return val.Handler
-
 }
