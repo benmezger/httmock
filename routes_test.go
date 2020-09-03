@@ -45,8 +45,9 @@ func Test_getTypeMethod(t *testing.T) {
 func Test_GenerateRoutes(t *testing.T) {
 	route := httprouter.New()
 	spec := ReadHTTPSpec(strings.NewReader(example))
-	assert.Equal(t, len(GenerateRoutes(spec, route)), 1, "There should be only one endpoint '/'")
-	assert.Equal(t, len(GenerateRoutes(spec, route)["/"]), 2, "There should be one two methods 'post' and 'get'")
+	GenerateRoutes(spec, route)
+	assert.Equal(t, len(spec.Paths), 1, "There should be only one endpoint '/'")
+	assert.Equal(t, len(spec.Paths["/"]), 2, "There should be one two methods 'post' and 'get'")
 }
 
 func Test_SetupRoutes(t *testing.T) {
