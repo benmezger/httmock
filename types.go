@@ -13,8 +13,8 @@ type HTTPSpecMethodResponse struct {
 }
 
 type HTTPSpecMethodRequest struct {
-	Args string
-	Body string
+	Params map[string]string
+	Body   string
 }
 
 type HTTPSpecMethod struct {
@@ -28,7 +28,6 @@ type UrlPath map[string]UrlSpec
 
 type HTTPSpec struct {
 	Paths UrlPath
-}
 }
 
 func (s *HTTPSpec) GetPaths() []string {

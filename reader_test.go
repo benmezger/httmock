@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var example = `
@@ -11,7 +12,8 @@ paths:
   /:
     get:
       request:
-        args: foobar=12
+        params:
+          name: get-name-param
       response:
         status: 200
         mimetype: application/json
@@ -21,7 +23,8 @@ paths:
           {"msg": "Hello, world"}
     post:
       request:
-        args: foobar=12
+        params:
+          name: post-name-param
         body: >-
           {"msg": "request payload"}
       response:
@@ -42,10 +45,10 @@ func Test_PrivateFileExists(t *testing.T) {
 }
 
 func Test_ReadHTTPSpec(t *testing.T) {
-	get_request := &HTTPSpecMethodRequest{"foobar=12", ""}
+	get_request := &HTTPSpecMethodRequest{map[string]string{"name": "get-name-param"}, ""}
 	get_response := &HTTPSpecMethodResponse{200, `{"msg": "Hello, world"}`, "application/json",
 		map[string]string{"Content-Type": "application/json"}}
-	post_request := &HTTPSpecMethodRequest{"foobar=12", `{"msg": "request payload"}`}
+	post_request := &HTTPSpecMethodRequest{map[string]string{"name": "post-name-param"}, `{"msg": "request payload"}`}
 	post_response := &HTTPSpecMethodResponse{201, `{"msg": "created"}`, "application/json",
 		map[string]string{"Content-Type": "application/json"}}
 

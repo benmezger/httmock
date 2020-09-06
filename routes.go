@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/julienschmidt/httprouter"
 	"net/http"
 	"strings"
+
+	"github.com/julienschmidt/httprouter"
 )
 
 func GenerateRoutes(spec *HTTPSpec, handler *httprouter.Router) {
