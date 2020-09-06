@@ -9,6 +9,7 @@ type HTTPSpecMethodResponse struct {
 	Status   int
 	Payload  string
 	Mimetype string
+	Header   map[string]string
 }
 
 type HTTPSpecMethodRequest struct {
