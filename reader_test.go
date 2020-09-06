@@ -14,6 +14,7 @@ paths:
         args: foobar=12
       response:
         status: 200
+        mimetype: application/json
         payload: >-
           {"msg": "Hello, world"}
     post:
@@ -23,6 +24,7 @@ paths:
           {"msg": "request payload"}
       response:
         status: 201
+        mimetype: application/json
         payload: >-
           {"msg": "created"}
 `
@@ -37,9 +39,9 @@ func Test_PrivateFileExists(t *testing.T) {
 
 func Test_ReadHTTPSpec(t *testing.T) {
 	get_request := &HTTPSpecMethodRequest{"foobar=12", ""}
-	get_response := &HTTPSpecMethodResponse{200, `{"msg": "Hello, world"}`}
+	get_response := &HTTPSpecMethodResponse{200, `{"msg": "Hello, world"}`, "application/json"}
 	post_request := &HTTPSpecMethodRequest{"foobar=12", `{"msg": "request payload"}`}
-	post_response := &HTTPSpecMethodResponse{201, `{"msg": "created"}`}
+	post_response := &HTTPSpecMethodResponse{201, `{"msg": "created"}`, "application/json"}
 
 	expected := &HTTPSpec{UrlPath{
 		"/": {

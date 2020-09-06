@@ -6,8 +6,9 @@ import (
 )
 
 type HTTPSpecMethodResponse struct {
-	Status  int
-	Payload string
+	Status   int
+	Payload  string
+	Mimetype string
 }
 
 type HTTPSpecMethodRequest struct {
