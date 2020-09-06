@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -20,7 +21,9 @@ func GenerateHandler(method *HTTPSpecMethod) func(w http.ResponseWriter, r *http
 		params := r.URL.Query()
 		for k, v := range method.Request.Params {
 			if params.Get(k) != v {
-				w.WriteHeader(http.StatusNotFound)
+				http.Error(w,
+					fmt.Sprintf(`{"msg":  "Missing param '%s' with content '%s'"}`, k, v),
+					http.StatusNotFound)
 				return
 			}
 		}
@@ -28,6 +31,7 @@ func GenerateHandler(method *HTTPSpecMethod) func(w http.ResponseWriter, r *http
 		for k, v := range method.Response.Header {
 			w.Header().Add(k, v)
 		}
+
 		w.WriteHeader(method.Response.Status)
 		w.Write([]byte(method.Response.Payload))
 	}
