@@ -10,7 +10,7 @@ func Test_HTTPSpecMethods(t *testing.T) {
 	t.Run("Test if GetPaths returns a correct slice", func(t *testing.T) {
 		spec := ReadHTTPSpec(strings.NewReader(example))
 		if assert.NotNil(t, spec) {
-			assert.Equal(t, spec.GetPaths(), append(make([]string, 1), "/"))
+			assert.Equal(t, spec.GetPaths(), append(make([]string, 0), "/"))
 		}
 	})
 
