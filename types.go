@@ -16,8 +16,12 @@ type HTTPSpecMethod struct {
 	Handler  interface{} `yaml:"-"`
 }
 
+type UrlSpec map[string]*HTTPSpecMethod
+type UrlPath map[string]UrlSpec
+
 type HTTPSpec struct {
-	Paths map[string]map[string]*HTTPSpecMethod
+	Paths UrlPath
+}
 }
 
 func (s *HTTPSpec) GetPaths() []string {

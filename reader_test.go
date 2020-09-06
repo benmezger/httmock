@@ -41,7 +41,7 @@ func Test_ReadHTTPSpec(t *testing.T) {
 	post_request := &HTTPSpecMethodRequest{"foobar=12", `{"msg": "request payload"}`}
 	post_response := &HTTPSpecMethodResponse{201, `{"msg": "created"}`}
 
-	expected := &HTTPSpec{map[string]map[string]*HTTPSpecMethod{
+	expected := &HTTPSpec{UrlPath{
 		"/": {
 			"get":  &HTTPSpecMethod{*get_request, *get_response, nil},
 			"post": &HTTPSpecMethod{*post_request, *post_response, nil}}}}
