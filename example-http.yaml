@@ -1,0 +1,43 @@
+paths:
+  /:
+    get:
+      request:
+        params:
+          name: name-param
+      response:
+        header:
+          Content-Type: application/json
+        status: 200
+        payload: >-
+          {"msg": "Hello, from / GET response"}
+    post:
+      request:
+        params:
+          name: name-param
+        body: >-
+          {"msg": Post request body"}
+      response:
+        status: 201
+        payload: >-
+          {"msg": "Hello, from / Response POST response"}
+  /user:
+    get:
+      request:
+        params:
+          name: name-param
+      response:
+        header:
+          Content-Type: application/json
+        status: 200
+        payload: >-
+          {"msg": "Hello, from /user GET response"}
+    post:
+      request:
+        params:
+          name: name-param
+        body: >-
+          {"msg": Hello, from /user POST request"}
+      response:
+        status: 201
+        payload: >-
+          {"msg": Hello, from /user POST response"}
