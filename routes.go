@@ -17,6 +17,14 @@ func GenerateRoutes(spec *HTTPSpec, handler *httprouter.Router) {
 
 func GenerateHandler(method *HTTPSpecMethod) func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		params := r.URL.Query()
+		for k, v := range method.Request.Params {
+			if params.Get(k) != v {
+				w.WriteHeader(http.StatusNotFound)
+				return
+			}
+		}
+
 		for k, v := range method.Response.Header {
 			w.Header().Add(k, v)
 		}
