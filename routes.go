@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
 
@@ -26,6 +27,14 @@ func GenerateHandler(method *HTTPSpecMethod) func(w http.ResponseWriter, r *http
 					http.StatusNotFound)
 				return
 			}
+		}
+
+		body, _ := ioutil.ReadAll(r.Body)
+		if string(body) != method.Request.Body {
+			http.Error(w,
+				fmt.Sprintf("'%s' in request does not match expected '%s'", string(body), method.Request.Body),
+				http.StatusBadRequest)
+			return
 		}
 
 		for k, v := range method.Response.Header {

@@ -14,6 +14,8 @@ paths:
       request:
         params:
           name: get-name-param
+        body: >-
+          {"msg": "Body of GET request"}
       response:
         status: 200
         mimetype: application/json
@@ -45,7 +47,7 @@ func Test_PrivateFileExists(t *testing.T) {
 }
 
 func Test_ReadHTTPSpec(t *testing.T) {
-	get_request := &HTTPSpecMethodRequest{map[string]string{"name": "get-name-param"}, ""}
+	get_request := &HTTPSpecMethodRequest{map[string]string{"name": "get-name-param"}, `{"msg": "Body of GET request"}`}
 	get_response := &HTTPSpecMethodResponse{200, `{"msg": "Hello, world"}`, "application/json",
 		map[string]string{"Content-Type": "application/json"}}
 	post_request := &HTTPSpecMethodRequest{map[string]string{"name": "post-name-param"}, `{"msg": "request payload"}`}

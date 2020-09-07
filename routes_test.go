@@ -66,10 +66,7 @@ func Test_GenerateHandler(t *testing.T) {
 	route := SetupRoutes(spec)
 
 	t.Run("Test '/' path without query params", func(t *testing.T) {
-		req, err := http.NewRequest("GET", "/", nil)
-		if err != nil {
-			t.Fatal(err)
-		}
+		req := httptest.NewRequest("GET", "/", strings.NewReader(""))
 
 		rr := httptest.NewRecorder()
 		route.ServeHTTP(rr, req)
@@ -82,11 +79,25 @@ func Test_GenerateHandler(t *testing.T) {
 			rr.Body.String())
 	})
 
-	t.Run("Test '/' path with query params", func(t *testing.T) {
-		req, err := http.NewRequest("GET", "/", nil)
-		if err != nil {
-			t.Fatal(err)
-		}
+	t.Run("Test '/' path with query params with missing body", func(t *testing.T) {
+		req := httptest.NewRequest("GET", "/", strings.NewReader(""))
+
+		params := url.Values{}
+		params.Add("name", "get-name-param")
+		req.URL.RawQuery = params.Encode()
+
+		rr := httptest.NewRecorder()
+		route.ServeHTTP(rr, req)
+
+		assert.Equal(t, http.StatusBadRequest, rr.Code, "Expected status 401")
+		assert.Equal(t, rr.Body.String(),
+			"'' in request does not match expected '{\"msg\": \"Body of GET request\"}'\n",
+			"Request body does not match")
+	})
+
+	t.Run("Test '/' path with query params and correct body", func(t *testing.T) {
+		req := httptest.NewRequest("GET", "/", strings.NewReader("{\"msg\": \"Body of GET request\"}"))
+
 		params := url.Values{}
 		params.Add("name", "get-name-param")
 		req.URL.RawQuery = params.Encode()
@@ -95,8 +106,6 @@ func Test_GenerateHandler(t *testing.T) {
 		route.ServeHTTP(rr, req)
 
 		assert.Equal(t, http.StatusOK, rr.Code, "Expected status 200")
-		ja := jsonassert.New(t)
-		ja.Assertf(`{"msg": "Hello, world"}`, rr.Body.String())
+		assert.Equal(t, rr.Body.String(), "{\"msg\": \"Hello, world\"}")
 	})
-
 }

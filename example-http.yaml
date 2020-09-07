@@ -4,6 +4,8 @@ paths:
       request:
         params:
           name: name-param
+        body: >-
+          {"msg": "Body of GET request"}
       response:
         header:
           Content-Type: application/json
