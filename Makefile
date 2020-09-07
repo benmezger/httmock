@@ -18,13 +18,13 @@ help:
 build:
 	@echo "building ${BIN_NAME}"
 	@echo "GOPATH=${GOPATH}"
-	go build -o bin/${BIN_NAME}
+	go build -v -o bin/${BIN_NAME}
 
 clean:
 	@test ! -e bin/${BIN_NAME} || rm bin/${BIN_NAME}
 
 test:
-	go test ./...
+	go test -v ./...
 
 run: build
 	go run .
