@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"httmock/config"
 	"log"
 	"net/http"
 
-	"httmock/config"
 	httmock_http "httmock/http"
 
 	"github.com/spf13/cobra"
@@ -28,5 +28,4 @@ var serveCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(serveCmd)
-
 }

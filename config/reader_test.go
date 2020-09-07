@@ -48,16 +48,22 @@ func Test_PrivateFileExists(t *testing.T) {
 
 func Test_ReadHTTPSpec(t *testing.T) {
 	get_request := &HTTPSpecMethodRequest{map[string]string{"name": "get-name-param"}, `{"msg": "Body of GET request"}`}
-	get_response := &HTTPSpecMethodResponse{200, `{"msg": "Hello, world"}`, "application/json",
-		map[string]string{"Content-Type": "application/json"}}
+	get_response := &HTTPSpecMethodResponse{
+		200, `{"msg": "Hello, world"}`, "application/json",
+		map[string]string{"Content-Type": "application/json"},
+	}
 	post_request := &HTTPSpecMethodRequest{map[string]string{"name": "post-name-param"}, `{"msg": "request payload"}`}
-	post_response := &HTTPSpecMethodResponse{201, `{"msg": "created"}`, "application/json",
-		map[string]string{"Content-Type": "application/json"}}
+	post_response := &HTTPSpecMethodResponse{
+		201, `{"msg": "created"}`, "application/json",
+		map[string]string{"Content-Type": "application/json"},
+	}
 
 	expected := &HTTPSpec{UrlPath{
 		"/": {
 			"get":  &HTTPSpecMethod{*get_request, *get_response, nil},
-			"post": &HTTPSpecMethod{*post_request, *post_response, nil}}}}
+			"post": &HTTPSpecMethod{*post_request, *post_response, nil},
+		},
+	}}
 
 	spec := ReadHTTPSpec(strings.NewReader(example))
 	assert.Equal(t, spec, expected, "Spec should be equal to expected")

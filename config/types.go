@@ -23,8 +23,10 @@ type HTTPSpecMethod struct {
 	Handler  interface{} `yaml:"-"`
 }
 
-type UrlSpec map[string]*HTTPSpecMethod
-type UrlPath map[string]UrlSpec
+type (
+	UrlSpec map[string]*HTTPSpecMethod
+	UrlPath map[string]UrlSpec
+)
 
 type HTTPSpec struct {
 	Paths UrlPath
@@ -61,7 +63,7 @@ func (hs *HTTPSpecMethod) SetHandler(handler interface{}, method string) {
 
 func (hs *HTTPSpecMethod) Invoke(args ...interface{}) {
 	inputs := make([]reflect.Value, len(args))
-	for i, _ := range args {
+	for i := range args {
 		inputs[i] = reflect.ValueOf(args[i])
 	}
 

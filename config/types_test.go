@@ -43,7 +43,6 @@ func Test_HTTPSpecMethods(t *testing.T) {
 }
 
 func Test_getTypeMethod(t *testing.T) {
-
 	t.Run("getTypeMethod should return nil", func(t *testing.T) {
 		type invalid struct{}
 		assert.Equal(t, getTypeMethod(&invalid{}, "GET"), nil, "getTypeMethod should return nil")

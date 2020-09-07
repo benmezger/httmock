@@ -3,14 +3,13 @@ package http
 import (
 	"fmt"
 	"httmock/config"
+	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
-	"net/http"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/kinbiko/jsonassert"

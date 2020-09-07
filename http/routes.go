@@ -2,11 +2,10 @@ package http
 
 import (
 	"fmt"
+	"httmock/config"
 	"io/ioutil"
 	"net/http"
 	"strings"
-
-	"httmock/config"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -46,7 +45,6 @@ func GenerateHandler(method *config.HTTPSpecMethod) func(w http.ResponseWriter, 
 		w.WriteHeader(method.Response.Status)
 		w.Write([]byte(method.Response.Payload))
 	}
-
 }
 
 func SetupRoutes(spec *config.HTTPSpec) *httprouter.Router {
