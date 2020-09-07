@@ -1,10 +1,10 @@
-package main
+package http
 
 import (
 	"fmt"
+	"httmock/config"
 	"net/http/httptest"
 	"net/url"
-	"reflect"
 	"strings"
 	"testing"
 
@@ -20,49 +20,52 @@ type valid struct{}
 
 func (v *valid) Method() { return }
 
-func Test_getTypeMethod(t *testing.T) {
-
-	t.Run("getTypeMethod should return nil", func(t *testing.T) {
-		type invalid struct{}
-		assert.Equal(t, getTypeMethod(&invalid{}, "GET"), nil, "getTypeMethod should return nil")
-	})
-
-	t.Run("getTypeMethod should return func type", func(t *testing.T) {
-		valid_t := &valid{}
-		expected_name, err := reflect.TypeOf(valid_t).MethodByName("Method")
-		if !err {
-			t.Error(err)
-		}
-
-		assert.Equal(
-			t,
-			getTypeMethod(valid_t, "Method").(reflect.Method).Name,
-			expected_name.Name,
-			"getTypeMethod should return the ")
-
-		assert.Equal(
-			t,
-			getTypeMethod(valid_t, "Method").(reflect.Method).Type,
-			expected_name.Type,
-			"getTypeMethod should return the ")
-	})
-}
+var example = `
+paths:
+  /:
+    get:
+      request:
+        params:
+          name: get-name-param
+        body: >-
+          {"msg": "Body of GET request"}
+      response:
+        status: 200
+        mimetype: application/json
+        header:
+          Content-Type: application/json
+        payload: >-
+          {"msg": "Hello, world"}
+    post:
+      request:
+        params:
+          name: post-name-param
+        body: >-
+          {"msg": "request payload"}
+      response:
+        header:
+          Content-Type: application/json
+        status: 201
+        mimetype: application/json
+        payload: >-
+          {"msg": "created"}
+`
 
 func Test_GenerateRoutes(t *testing.T) {
 	route := httprouter.New()
-	spec := ReadHTTPSpec(strings.NewReader(example))
+	spec := config.ReadHTTPSpec(strings.NewReader(example))
 	GenerateRoutes(spec, route)
 	assert.Equal(t, len(spec.Paths), 1, "There should be only one endpoint '/'")
 	assert.Equal(t, len(spec.Paths["/"]), 2, "There should be one two methods 'post' and 'get'")
 }
 
 func Test_SetupRoutes(t *testing.T) {
-	router := SetupRoutes(ReadHTTPSpec(strings.NewReader(example)))
+	router := SetupRoutes(config.ReadHTTPSpec(strings.NewReader(example)))
 	assert.NotNil(t, router)
 }
 
 func Test_GenerateHandler(t *testing.T) {
-	spec := ReadHTTPSpec(strings.NewReader(example))
+	spec := config.ReadHTTPSpec(strings.NewReader(example))
 	route := SetupRoutes(spec)
 
 	t.Run("Test '/' path without query params", func(t *testing.T) {
