@@ -1,6 +1,6 @@
 package main
 
-import "httmock/cmd"
+import "github.com/benmezger/httmock/cmd"
 
 func main() {
 	cmd.Execute()

@@ -2,7 +2,7 @@ package http
 
 import (
 	"fmt"
-	"httmock/config"
+	"github.com/benmezger/httmock/config"
 	"net/http"
 	"net/http/httptest"
 	"net/url"

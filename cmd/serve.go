@@ -2,11 +2,11 @@ package cmd
 
 import (
 	"fmt"
-	"httmock/config"
+	"github.com/benmezger/httmock/config"
 	"log"
 	"net/http"
 
-	httmock_http "httmock/http"
+	httmock_http "github.com/benmezger/httmock/http"
 
 	"github.com/spf13/cobra"
 )

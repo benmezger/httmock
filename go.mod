@@ -1,4 +1,4 @@
-module httmock
+module github.com/benmezger/httmock
 
 go 1.15
 
