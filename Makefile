@@ -28,3 +28,6 @@ test:
 
 run: build
 	go run .
+
+install:
+	go install .

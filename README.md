@@ -4,9 +4,8 @@
 
 ## Installing
 
-Install with `go` with:
-
-- `go install https://github.com/benmezger/httmock`
+1. Clone this repository: `git clone https://github.com/benmezger/httmock`:
+2. Run `make install`
 
 ## Running
 
