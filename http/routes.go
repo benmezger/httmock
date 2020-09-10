@@ -2,10 +2,11 @@ package http
 
 import (
 	"fmt"
-	"github.com/benmezger/httmock/config"
 	"io/ioutil"
 	"net/http"
 	"strings"
+
+	"github.com/benmezger/httmock/config"
 
 	"github.com/julienschmidt/httprouter"
 )
