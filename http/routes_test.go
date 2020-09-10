@@ -2,12 +2,13 @@ package http
 
 import (
 	"fmt"
-	"github.com/benmezger/httmock/config"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"strings"
 	"testing"
+
+	"github.com/benmezger/httmock/config"
 
 	"github.com/stretchr/testify/assert"
 

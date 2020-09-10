@@ -13,6 +13,8 @@ Make sure you have a `.http.yaml` in your current directory or pass a custom fil
 
 - `httmock serve` or `httmock --api-file <filename> serve`
 
+Use `httmock serve --host localhost:8000` for using a different host/port.
+
 ## HTTP file syntax
 
 For an example of the file structure, see [example-http.yaml](example-http.yaml).
@@ -20,7 +22,6 @@ For an example of the file structure, see [example-http.yaml](example-http.yaml)
 ## TODOs
 
 - Handle context base requests and responses
-- Add `-h` and `-p` for changing the port and host on `serve` command
 
 ## Example
 
