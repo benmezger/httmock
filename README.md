@@ -15,6 +15,12 @@ Make sure you have a `.http.yaml` in your current directory or pass a custom fil
 
 Use `httmock serve --host localhost:8000` for using a different host/port.
 
+### Listing routes
+
+For listing routes with their available params, use:
+
+- `httmock list` or `httmock --api-file <filename> list`
+
 ## HTTP file syntax
 
 For an example of the file structure, see [example-http.yaml](example-http.yaml).
