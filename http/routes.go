@@ -1,15 +1,30 @@
 package http
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"reflect"
 	"strings"
 
 	"github.com/benmezger/httmock/config"
 
 	"github.com/julienschmidt/httprouter"
 )
+
+func jsonEqual(a, b string) (bool, error) {
+	var i, j interface{}
+	d := json.NewDecoder(strings.NewReader(a))
+	if err := d.Decode(&i); err != nil {
+		return false, err
+	}
+	d = json.NewDecoder(strings.NewReader(b))
+	if err := d.Decode(&j); err != nil {
+		return false, err
+	}
+	return reflect.DeepEqual(i, j), nil
+}
 
 func GenerateRoutes(spec *config.HTTPSpec, handler *httprouter.Router) {
 	for _, methods := range spec.Paths {
@@ -32,7 +47,7 @@ func GenerateHandler(method *config.HTTPSpecMethod) func(w http.ResponseWriter, 
 		}
 
 		body, _ := ioutil.ReadAll(r.Body)
-		if string(body) != method.Request.Body {
+		if equal, err := jsonEqual(string(body), method.Request.Body); err != nil || !equal {
 			http.Error(w,
 				fmt.Sprintf("'%s' in request does not match expected '%s'", string(body), method.Request.Body),
 				http.StatusBadRequest)
