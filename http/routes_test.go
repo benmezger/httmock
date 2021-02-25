@@ -41,7 +41,7 @@ paths:
         params:
           name: post-name-param
         body: >-
-          {"msg": "request payload"}
+          {"msg": "request payload", "test": 123}
       response:
         header:
           Content-Type: application/json
@@ -110,5 +110,19 @@ func Test_GenerateHandler(t *testing.T) {
 
 		assert.Equal(t, http.StatusOK, rr.Code, "Expected status 200")
 		assert.Equal(t, rr.Body.String(), "{\"msg\": \"Hello, world\"}")
+	})
+
+	t.Run("Test '/' path with equivalent body", func(t *testing.T) {
+		req := httptest.NewRequest("POST", "/", strings.NewReader(`{"test":123, "msg": "request payload"}`))
+
+		params := url.Values{}
+		params.Add("name", "post-name-param")
+		req.URL.RawQuery = params.Encode()
+
+		rr := httptest.NewRecorder()
+		route.ServeHTTP(rr, req)
+
+		assert.Equal(t, http.StatusCreated, rr.Code, "Expected status 201")
+		assert.Equal(t, `{"msg": "created"}`, rr.Body.String())
 	})
 }
